@@ -1,1 +1,727 @@
-hi
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yusuf Al-Rahman | Portfolio</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        pastel: {
+                            pink: '#FFD1DC',
+                            blue: '#AEC6CF',
+                            purple: '#E6E6FA',
+                            green: '#77DD77',
+                            yellow: '#FDFD96',
+                            cream: '#FFFBF0'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Custom Styles & Glassmorphism */
+        body {
+            background-color: #FFFBF0;
+            overflow-x: hidden;
+            cursor: none; /* Sembunyikan kursor default untuk kursor custom */
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+        }
+
+        /* Animated Background Blobs */
+        .blob-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            filter: blur(60px);
+            opacity: 0.7;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .blob-1 { width: 50vw; height: 50vw; background: #FFD1DC; top: -10%; left: -10%; }
+        .blob-2 { width: 40vw; height: 40vw; background: #E6E6FA; bottom: -10%; right: -10%; animation-delay: -5s; }
+        .blob-3 { width: 35vw; height: 35vw; background: #AEC6CF; top: 40%; left: 30%; animation-delay: -10s; }
+        .blob-4 { width: 30vw; height: 30vw; background: #FDFD96; top: 10%; right: 10%; animation-delay: -15s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            33% { transform: translate(5%, 10%) scale(1.1) rotate(10deg); }
+            66% { transform: translate(-5%, 5%) scale(0.9) rotate(-5deg); }
+            100% { transform: translate(10%, -10%) scale(1.05) rotate(15deg); }
+        }
+
+        /* Custom Cursor */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #8b5cf6;
+        }
+        
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(139, 92, 246, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        /* Hover states for cursor */
+        a:hover ~ .cursor-outline, button:hover ~ .cursor-outline, .hover-target:hover ~ .cursor-outline {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(139, 92, 246, 0.1);
+            border-color: #8b5cf6;
+        }
+
+        /* Timeline Line */
+        .timeline-line {
+            width: 2px;
+            background: linear-gradient(to bottom, #AEC6CF, #E6E6FA, #FFD1DC);
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            transform-origin: top;
+        }
+
+        @media (min-width: 768px) {
+            .timeline-line { left: 50%; transform: translateX(-50%); }
+        }
+
+        /* Skill Marquee */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            width: 100%;
+            padding: 20px 0;
+        }
+        
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 30s linear infinite;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .skill-tag {
+            display: inline-block;
+            padding: 10px 24px;
+            margin: 0 10px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255,255,255,0.9);
+            color: #4b5563;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            transition: all 0.3s;
+        }
+
+        .skill-tag:hover {
+            background: white;
+            transform: scale(1.1) rotate(-3deg);
+            color: #8b5cf6;
+            box-shadow: 0 10px 15px rgba(139, 92, 246, 0.1);
+        }
+        
+        .clip-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(45deg, #8b5cf6, #ec4899, #3b82f6);
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased selection:bg-purple-200 selection:text-purple-900">
+
+    <!-- Custom Cursor Elements -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Animated Pastel Background -->
+    <div class="blob-container">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="blob blob-4"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 top-4 px-4 transition-all duration-300" id="navbar">
+        <div class="max-w-5xl mx-auto glass-panel rounded-full px-6 py-3 flex justify-between items-center">
+            <a href="#home" class="text-xl font-bold tracking-tighter clip-text hover-target">YA.</a>
+            <div class="hidden md:flex space-x-8 text-sm font-semibold text-gray-600">
+                <a href="#about" class="hover:text-purple-600 transition-colors hover-target">Tentang</a>
+                <a href="#skills" class="hover:text-purple-600 transition-colors hover-target">Keahlian</a>
+                <a href="#experience" class="hover:text-purple-600 transition-colors hover-target">Pengalaman</a>
+                <a href="#education" class="hover:text-purple-600 transition-colors hover-target">Pendidikan</a>
+            </div>
+            <a href="#contact" class="hidden md:inline-block bg-purple-600 text-white px-5 py-2 rounded-full text-sm font-bold shadow-lg hover:shadow-purple-300/50 hover:-translate-y-1 transition-all hover-target">
+                Hubungi Saya
+            </a>
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-gray-800 hover-target">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="home" class="min-h-screen flex items-center justify-center relative pt-20 overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10 text-center">
+            <p class="gsap-hero text-purple-600 font-semibold tracking-wider mb-4 uppercase text-sm md:text-base">Halo, Selamat Datang!</p>
+            <h1 class="gsap-hero text-5xl md:text-7xl lg:text-8xl font-extrabold mb-6 tracking-tight text-gray-900">
+                Saya <span class="clip-text font-serif italic pr-2">Yusuf</span> Al-Rahman
+            </h1>
+            <div class="gsap-hero h-12 md:h-16 flex justify-center items-center mb-8">
+                <span class="text-xl md:text-3xl font-light text-gray-600 mr-2">Seorang</span>
+                <span id="typewriter" class="text-xl md:text-3xl font-bold text-gray-800 border-r-4 border-purple-500 pr-1"></span>
+            </div>
+            
+            <div class="gsap-hero flex justify-center gap-4 mt-8">
+                <a href="https://linkedin.com" target="_blank" class="w-12 h-12 rounded-full glass-card flex items-center justify-center text-xl text-blue-600 hover:text-white hover:bg-blue-600 hover-target">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://github.com" target="_blank" class="w-12 h-12 rounded-full glass-card flex items-center justify-center text-xl text-gray-800 hover:text-white hover:bg-gray-800 hover-target">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="mailto:sirjosephholmes@gmail.com" class="w-12 h-12 rounded-full glass-card flex items-center justify-center text-xl text-red-500 hover:text-white hover:bg-red-500 hover-target">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce flex flex-col items-center opacity-60">
+            <span class="text-xs uppercase tracking-widest mb-2 font-semibold">Scroll</span>
+            <i class="fas fa-arrow-down"></i>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 relative">
+        <div class="container mx-auto px-6 max-w-5xl">
+            <div class="gsap-fade glass-panel rounded-3xl p-8 md:p-12 shadow-xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-pastel-yellow rounded-full mix-blend-multiply filter blur-2xl opacity-50 translate-x-1/2 -translate-y-1/2"></div>
+                
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-user-astronaut text-purple-500 mr-4"></i> Tentang Saya
+                </h2>
+                <div class="flex flex-col md:flex-row gap-8 items-center">
+                    <div class="md:w-2/3 text-lg text-gray-700 leading-relaxed">
+                        <p class="mb-4">
+                            Saya adalah Mahasiswa Informatika di Universitas Siber Asia (UNSIA) yang sangat antusias dalam mengembangkan solusi inovatif berbasis <strong>IoT (Internet of Things)</strong> dan <strong>Machine Learning</strong>.
+                        </p>
+                        <p>
+                            Memiliki pengalaman langsung dalam membangun *embedded systems*, jaringan sensor, dan mengimplementasikan algoritma machine learning untuk analisis data real-time. Saya terdorong oleh keinginan untuk menerapkan kemampuan analitis dan operasional guna mengoptimalkan efisiensi dan mendorong inovasi, terutama dalam lingkungan *supply chain* yang dinamis.
+                        </p>
+                    </div>
+                    <div class="md:w-1/3 flex justify-center">
+                        <!-- Placeholder for Photo, using a stylized div instead of raw image -->
+                        <div class="w-48 h-48 rounded-full border-4 border-white shadow-2xl overflow-hidden relative group">
+                            <div class="absolute inset-0 bg-gradient-to-tr from-purple-400 to-pink-300 opacity-50 group-hover:opacity-0 transition-opacity duration-500 z-10"></div>
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Yusuf&backgroundColor=e6e6fa" alt="Yusuf Al-Rahman" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 relative">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-12 gsap-fade">
+                <h2 class="text-3xl md:text-4xl font-bold inline-block relative">
+                    Keahlian Teknis & Kompetensi
+                    <div class="absolute -bottom-2 left-0 w-full h-3 bg-pastel-pink -z-10 rounded-full opacity-60"></div>
+                </h2>
+            </div>
+
+            <!-- Infinite Marquee for Skills -->
+            <div class="marquee-container mt-10">
+                <div class="marquee-content hover-target">
+                    <!-- Set 1 -->
+                    <div class="skill-tag"><i class="fas fa-robot text-blue-500 mr-2"></i>AI Agent Orchestration</div>
+                    <div class="skill-tag"><i class="fas fa-brain text-purple-500 mr-2"></i>Machine Learning</div>
+                    <div class="skill-tag"><i class="fas fa-network-wired text-green-500 mr-2"></i>Sensor Networks & IoT</div>
+                    <div class="skill-tag"><i class="fas fa-microchip text-gray-700 mr-2"></i>Embedded Systems</div>
+                    <div class="skill-tag"><i class="fas fa-project-diagram text-orange-500 mr-2"></i>LangGraph & AutoGen</div>
+                    <div class="skill-tag"><i class="fas fa-cube text-blue-600 mr-2"></i>Docker & Jenkins</div>
+                    <div class="skill-tag"><i class="fab fa-google text-red-500 mr-2"></i>Google Cloud</div>
+                    <div class="skill-tag"><i class="fab fa-node-js text-green-600 mr-2"></i>Node.js</div>
+                    <div class="skill-tag"><i class="fas fa-code text-blue-800 mr-2"></i>C++</div>
+                    <div class="skill-tag"><i class="fas fa-server text-indigo-500 mr-2"></i>CI/CD & DevOps</div>
+                    <!-- Set 2 (Duplikat untuk efek infinite scroll tanpa putus) -->
+                    <div class="skill-tag"><i class="fas fa-robot text-blue-500 mr-2"></i>AI Agent Orchestration</div>
+                    <div class="skill-tag"><i class="fas fa-brain text-purple-500 mr-2"></i>Machine Learning</div>
+                    <div class="skill-tag"><i class="fas fa-network-wired text-green-500 mr-2"></i>Sensor Networks & IoT</div>
+                    <div class="skill-tag"><i class="fas fa-microchip text-gray-700 mr-2"></i>Embedded Systems</div>
+                    <div class="skill-tag"><i class="fas fa-project-diagram text-orange-500 mr-2"></i>LangGraph & AutoGen</div>
+                    <div class="skill-tag"><i class="fas fa-cube text-blue-600 mr-2"></i>Docker & Jenkins</div>
+                    <div class="skill-tag"><i class="fab fa-google text-red-500 mr-2"></i>Google Cloud</div>
+                    <div class="skill-tag"><i class="fab fa-node-js text-green-600 mr-2"></i>Node.js</div>
+                    <div class="skill-tag"><i class="fas fa-code text-blue-800 mr-2"></i>C++</div>
+                    <div class="skill-tag"><i class="fas fa-server text-indigo-500 mr-2"></i>CI/CD & DevOps</div>
+                </div>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-4 mt-12 px-6 gsap-fade max-w-4xl mx-auto">
+                <span class="px-5 py-2 bg-purple-100 text-purple-700 rounded-lg text-sm font-semibold border border-purple-200">TensorFlow & Hugging Face</span>
+                <span class="px-5 py-2 bg-blue-100 text-blue-700 rounded-lg text-sm font-semibold border border-blue-200">SonarQube</span>
+                <span class="px-5 py-2 bg-pink-100 text-pink-700 rounded-lg text-sm font-semibold border border-pink-200">MCP (Model Context Protocol)</span>
+                <span class="px-5 py-2 bg-yellow-100 text-yellow-700 rounded-lg text-sm font-semibold border border-yellow-200">Real-time Data Analysis</span>
+                <span class="px-5 py-2 bg-green-100 text-green-700 rounded-lg text-sm font-semibold border border-green-200">Technical Project Management</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Timeline -->
+    <section id="experience" class="py-24 relative">
+        <div class="container mx-auto px-6 max-w-5xl">
+            <div class="text-center mb-16 gsap-fade">
+                <h2 class="text-3xl md:text-4xl font-bold inline-block relative">
+                    Pengalaman Kerja
+                    <div class="absolute -bottom-2 left-0 w-full h-3 bg-pastel-blue -z-10 rounded-full opacity-60"></div>
+                </h2>
+            </div>
+
+            <div class="relative">
+                <!-- Center Line -->
+                <div class="timeline-line hidden md:block" id="timelineLine"></div>
+
+                <!-- Item 1 -->
+                <div class="gsap-timeline-item relative flex flex-col md:flex-row items-center justify-between mb-16 w-full">
+                    <div class="hidden md:block md:w-5/12"></div>
+                    <div class="z-20 flex items-center justify-center w-10 h-10 rounded-full bg-white border-4 border-blue-300 shadow absolute left-5 md:left-1/2 transform md:-translate-x-1/2">
+                        <i class="fas fa-flask text-blue-500 text-sm"></i>
+                    </div>
+                    <div class="w-full pl-16 md:pl-0 md:w-5/12 text-left">
+                        <div class="glass-card p-6 rounded-2xl hover-target">
+                            <span class="text-xs font-bold text-blue-500 bg-blue-50 px-3 py-1 rounded-full mb-3 inline-block">Apr 2024 - Sep 2024</span>
+                            <h3 class="text-xl font-bold text-gray-800">Researcher Staff (Internship)</h3>
+                            <h4 class="text-md text-gray-600 font-semibold mb-3">Universitas Trilogi</h4>
+                            <ul class="text-sm text-gray-600 list-disc list-inside space-y-2">
+                                <li>Pengembangan prototipe sistem kontrol HVAC pintar menggunakan sensor IoT dan Machine Learning.</li>
+                                <li>Merancang & implementasi integrasi sensor komprehensif dengan pipeline pemrosesan data real-time.</li>
+                                <li>Berhasil mendemonstrasikan prototipe di berbagai pameran teknologi.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="gsap-timeline-item relative flex flex-col md:flex-row items-center justify-between mb-16 w-full">
+                    <div class="w-full pl-16 md:pl-0 md:w-5/12 text-left md:text-right">
+                        <div class="glass-card p-6 rounded-2xl hover-target">
+                            <span class="text-xs font-bold text-pink-500 bg-pink-50 px-3 py-1 rounded-full mb-3 inline-block">Sep 2023 - Jun 2024</span>
+                            <h3 class="text-xl font-bold text-gray-800">Web Developer (Internship)</h3>
+                            <h4 class="text-md text-gray-600 font-semibold mb-3">Bimbel Tiki Taka</h4>
+                            <ul class="text-sm text-gray-600 list-disc list-inside md:list-none space-y-2">
+                                <li>Menciptakan antarmuka responsif & fungsional untuk pengalaman pengguna terbaik di semua perangkat.</li>
+                                <li>Mendesain & mengembangkan website ramah pengguna yang menghasilkan <strong>15% peningkatan akuisisi franchise</strong>.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="z-20 flex items-center justify-center w-10 h-10 rounded-full bg-white border-4 border-pink-300 shadow absolute left-5 md:left-1/2 transform md:-translate-x-1/2 top-0 md:top-auto">
+                        <i class="fas fa-laptop-code text-pink-500 text-sm"></i>
+                    </div>
+                    <div class="hidden md:block md:w-5/12"></div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="gsap-timeline-item relative flex flex-col md:flex-row items-center justify-between mb-16 w-full">
+                    <div class="hidden md:block md:w-5/12"></div>
+                    <div class="z-20 flex items-center justify-center w-10 h-10 rounded-full bg-white border-4 border-purple-300 shadow absolute left-5 md:left-1/2 transform md:-translate-x-1/2">
+                        <i class="fas fa-vr-cardboard text-purple-500 text-sm"></i>
+                    </div>
+                    <div class="w-full pl-16 md:pl-0 md:w-5/12 text-left">
+                        <div class="glass-card p-6 rounded-2xl hover-target">
+                            <span class="text-xs font-bold text-purple-500 bg-purple-50 px-3 py-1 rounded-full mb-3 inline-block">Feb 2023 - Jul 2023</span>
+                            <h3 class="text-xl font-bold text-gray-800">Meta Spark AR Designer (Internship)</h3>
+                            <h4 class="text-md text-gray-600 font-semibold mb-3">Revolusi Belajar Indonesia</h4>
+                            <ul class="text-sm text-gray-600 list-disc list-inside space-y-2">
+                                <li>Mengembangkan & memelihara pengalaman AR interaktif di platform Meta Spark.</li>
+                                <li>Berkolaborasi dengan desainer & developer untuk membuat konten edukatif AR.</li>
+                                <li><strong>Proyek:</strong> Math Adventure (Filter Instagram dengan game kuis).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Volunteer Item -->
+                <div class="gsap-timeline-item relative flex flex-col md:flex-row items-center justify-between w-full">
+                    <div class="w-full pl-16 md:pl-0 md:w-5/12 text-left md:text-right">
+                        <div class="glass-card p-6 rounded-2xl hover-target">
+                            <span class="text-xs font-bold text-yellow-600 bg-yellow-50 px-3 py-1 rounded-full mb-3 inline-block">Apr 2024 (Volunteer)</span>
+                            <h3 class="text-xl font-bold text-gray-800">Technical Workshop Facilitator</h3>
+                            <h4 class="text-md text-gray-600 font-semibold mb-3">CEP-CCIT FTUI</h4>
+                            <ul class="text-sm text-gray-600 list-disc list-inside md:list-none space-y-2">
+                                <li>Memimpin workshop "Microcontroller Programming & Sensors" (Tingkat pemahaman peserta >90%).</li>
+                                <li>Mengembangkan modul praktis terstruktur yang menghasilkan peningkatan pemahaman teknis 40%.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="z-20 flex items-center justify-center w-10 h-10 rounded-full bg-white border-4 border-yellow-300 shadow absolute left-5 md:left-1/2 transform md:-translate-x-1/2 top-0 md:top-auto">
+                        <i class="fas fa-hands-helping text-yellow-500 text-sm"></i>
+                    </div>
+                    <div class="hidden md:block md:w-5/12"></div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Education & Certifications -->
+    <section id="education" class="py-24 relative overflow-hidden">
+        <!-- Decorative blobs just for this section -->
+        <div class="absolute top-1/2 left-10 w-40 h-40 bg-pastel-green rounded-full mix-blend-multiply filter blur-3xl opacity-40"></div>
+        <div class="absolute bottom-10 right-10 w-64 h-64 bg-pastel-purple rounded-full mix-blend-multiply filter blur-3xl opacity-40"></div>
+
+        <div class="container mx-auto px-6 max-w-6xl relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                
+                <!-- Education Column -->
+                <div class="gsap-fade-up">
+                    <h2 class="text-3xl font-bold mb-8 flex items-center">
+                        <i class="fas fa-graduation-cap text-green-500 mr-4"></i> Pendidikan
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <div class="glass-card p-6 rounded-2xl border-l-4 border-l-green-400 hover-target">
+                            <h3 class="text-xl font-bold text-gray-800">Bachelor's Degree - Information Systems (Extension)</h3>
+                            <p class="text-green-600 font-semibold">Asia Cyber University, Indonesia</p>
+                            <div class="flex justify-between items-center mt-3 text-sm text-gray-500">
+                                <span><i class="far fa-calendar-alt mr-1"></i> Oct 2025 - Feb 2027 (Expected)</span>
+                                <span class="bg-green-100 text-green-800 font-bold px-3 py-1 rounded-lg">GPA: 3.93</span>
+                            </div>
+                        </div>
+
+                        <div class="glass-card p-6 rounded-2xl border-l-4 border-l-blue-400 hover-target">
+                            <h3 class="text-xl font-bold text-gray-800">Professional Program - Internet Based System Automation</h3>
+                            <p class="text-blue-600 font-semibold">CEP-CCIT FTUI, Indonesia</p>
+                            <div class="flex justify-between items-center mt-3 text-sm text-gray-500">
+                                <span><i class="far fa-calendar-alt mr-1"></i> 2022 - 2024</span>
+                                <span class="bg-blue-100 text-blue-800 font-bold px-3 py-1 rounded-lg">GPA: 3.44</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certifications Column -->
+                <div class="gsap-fade-up delay-200">
+                    <h2 class="text-3xl font-bold mb-8 flex items-center">
+                        <i class="fas fa-award text-yellow-500 mr-4"></i> Sertifikasi
+                    </h2>
+                    
+                    <div class="glass-panel rounded-3xl p-6">
+                        <ul class="space-y-4">
+                            <li class="flex items-start group hover-target">
+                                <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform">
+                                    <i class="fas fa-certificate text-yellow-600"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="text-md font-bold text-gray-800">AI Engineer Agentic Track: Complete Agent & MCP Course</h4>
+                                    <p class="text-sm text-gray-500">Udemy</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start group hover-target">
+                                <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform">
+                                    <i class="fas fa-fire text-orange-600"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="text-md font-bold text-gray-800">TensorFlow for Deep Learning Bootcamp</h4>
+                                    <p class="text-sm text-gray-500">Udemy</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start group hover-target">
+                                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform">
+                                    <i class="fas fa-code text-blue-600"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="text-md font-bold text-gray-800">Programmer (Certification Scheme)</h4>
+                                    <p class="text-sm text-gray-500">BNSP</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start group hover-target">
+                                <div class="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform">
+                                    <i class="fas fa-network-wired text-cyan-600"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="text-md font-bold text-gray-800">Cisco Certified Network Associate (CCNA)</h4>
+                                    <p class="text-sm text-gray-500">Cisco</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start group hover-target">
+                                <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform">
+                                    <i class="fab fa-android text-green-600"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="text-md font-bold text-gray-800">Android Engineering</h4>
+                                    <p class="text-sm text-gray-500">Binar Academy</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact / Footer -->
+    <footer id="contact" class="pt-20 pb-10 relative text-center">
+        <div class="container mx-auto px-6 max-w-3xl">
+            <div class="glass-panel rounded-3xl p-10 mb-12 gsap-fade shadow-lg">
+                <h2 class="text-3xl font-bold mb-4">Mari Berkolaborasi!</h2>
+                <p class="text-gray-600 mb-8">Saya selalu terbuka untuk mendiskusikan proyek IoT, Machine Learning, atau pengembangan web kreatif lainnya.</p>
+                <a href="mailto:sirjosephholmes@gmail.com" class="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white bg-gradient-to-r from-purple-500 to-pink-500 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 hover-target">
+                    <i class="fas fa-paper-plane mr-3"></i> sirjosephholmes@gmail.com
+                </a>
+            </div>
+
+            <div class="flex justify-center space-x-6 mb-8">
+                <a href="https://linkedin.com" target="_blank" class="text-gray-400 hover:text-blue-600 text-2xl transition-colors hover-target"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com" target="_blank" class="text-gray-400 hover:text-gray-900 text-2xl transition-colors hover-target"><i class="fab fa-github"></i></a>
+                <a href="Https://bit.ly/JosevPorto" target="_blank" class="text-gray-400 hover:text-purple-600 text-2xl transition-colors hover-target"><i class="fas fa-link"></i></a>
+            </div>
+
+            <p class="text-sm text-gray-400">
+                &copy; <span id="year"></span> Yusuf Al-Rahman. All rights reserved.<br>
+                <span class="text-xs">Based in Jakarta, Indonesia 🇮🇩</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- GSAP Scripts for Mindblowing Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <script>
+        // Register ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- Custom Cursor Logic ---
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+
+        window.addEventListener('mousemove', function (e) {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            // Dot follows exactly
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            // Outline follows with slight delay using animate
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Hide cursor when leaving window
+        document.addEventListener('mouseleave', () => {
+            cursorDot.style.opacity = 0;
+            cursorOutline.style.opacity = 0;
+        });
+        document.addEventListener('mouseenter', () => {
+            cursorDot.style.opacity = 1;
+            cursorOutline.style.opacity = 1;
+        });
+
+        // --- Typewriter Effect ---
+        const words = ["AI Agent Orchestrator", "IoT Enthusiast", "Web Developer", "ML Engineer"];
+        let i = 0;
+        let timer;
+        const typewriterEl = document.getElementById('typewriter');
+        
+        function typingEffect() {
+            let word = words[i].split("");
+            var loopTyping = function() {
+                if (word.length > 0) {
+                    typewriterEl.innerHTML += word.shift();
+                } else {
+                    setTimeout(deletingEffect, 2000);
+                    return false;
+                }
+                timer = setTimeout(loopTyping, 100);
+            };
+            loopTyping();
+        }
+
+        function deletingEffect() {
+            let word = words[i].split("");
+            var loopDeleting = function() {
+                if (word.length > 0) {
+                    word.pop();
+                    typewriterEl.innerHTML = word.join("");
+                } else {
+                    if (words.length > (i + 1)) {
+                        i++;
+                    } else {
+                        i = 0;
+                    }
+                    setTimeout(typingEffect, 500);
+                    return false;
+                }
+                timer = setTimeout(loopDeleting, 50);
+            };
+            loopDeleting();
+        }
+        
+        // Start typing effect
+        setTimeout(typingEffect, 1500);
+
+        // --- GSAP Animations ---
+        
+        // Initial Hero Reveal
+        const tl = gsap.timeline();
+        tl.from(".gsap-hero", {
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.2,
+            ease: "back.out(1.7)",
+            delay: 0.5
+        });
+
+        // Scroll Animations for sections
+        gsap.utils.toArray('.gsap-fade').forEach(section => {
+            gsap.from(section, {
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out"
+            });
+        });
+
+        // Staggered fade up for columns (Education/Certifications)
+        gsap.utils.toArray('.gsap-fade-up').forEach((el, index) => {
+            gsap.from(el, {
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 85%",
+                },
+                y: 60,
+                opacity: 0,
+                duration: 0.8,
+                delay: index * 0.2,
+                ease: "power2.out"
+            });
+        });
+
+        // Timeline Items Animation
+        gsap.utils.toArray('.gsap-timeline-item').forEach((item, index) => {
+            const direction = window.innerWidth > 768 ? (index % 2 === 0 ? 50 : -50) : 50;
+            
+            gsap.from(item, {
+                scrollTrigger: {
+                    trigger: item,
+                    start: "top 85%",
+                },
+                x: direction,
+                opacity: 0,
+                duration: 0.8,
+                ease: "back.out(1.2)"
+            });
+        });
+
+        // Animate Timeline Line height based on scroll
+        const timelineLine = document.getElementById('timelineLine');
+        if(timelineLine) {
+            gsap.fromTo(timelineLine, 
+                { scaleY: 0 },
+                {
+                    scaleY: 1,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: "#experience",
+                        start: "top 50%",
+                        end: "bottom 80%",
+                        scrub: 1
+                    }
+                }
+            );
+        }
+
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('py-2');
+                nav.classList.remove('top-4');
+                nav.classList.add('top-0');
+            } else {
+                nav.classList.remove('py-2');
+                nav.classList.add('top-4');
+                nav.classList.remove('top-0');
+            }
+        });
+    </script>
+</body>
+</html>
